@@ -1,0 +1,11 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests
+
+services:
+    -
+        class: Tests\Architecture\EntityNotFinalTest
+        tags:
+            - phpat.test
