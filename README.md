@@ -18,3 +18,28 @@ composer install
 ```
 
 ![](public/enum-should-not-be-final.png "PHP enum are considered final")
+
+## Workaround
+It seems that enums are considered final by PHP (see `ReflectionEnum` API), so it's not a bug of PHPat.
+
+```php
+$reflectionEnum = new \ReflectionEnum(FooEnum::class);
+var_dump($reflectionEnum->isFinal()); //true
+```
+
+The solution is to have the following test:
+
+```php
+final class EntityNotFinalTest
+{
+    public function testEntityClassesAreNotFinal(): Rule
+    {
+        return PHPat::rule()
+            ->classes(Selector::namespace('App\Entity'))
+            ->excluding(Selector::enum())
+            ->shouldNotBeFinal()
+        ;
+    }
+}
+
+```
